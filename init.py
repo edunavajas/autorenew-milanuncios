@@ -12,11 +12,16 @@ PASSWORD = os.getenv('MILANUNCIOS_PASSWORD')
 URL_LOGIN = "https://www.milanuncios.com/"
 URL_MY_ADS = "https://www.milanuncios.com/mis-anuncios/"
 
-VPN_CONFIG = "/home/ubuntu/autorenew-milanuncios/esp_vpn"
+VPN_CONFIG = "/home/ubuntu/autorenew-milanuncios/esp_vpn.conf"
+PROXY_SERVER = "https://185.202.165.1:53281"
 
 def renew_ads():
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True)
+        browser = p.chromium.launch(
+            headless=True,
+            proxy={
+                "server": PROXY_SERVER,
+            })
         context = browser.new_context(user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36")
         page = context.new_page()
 
@@ -64,15 +69,15 @@ def renew_ads():
         browser.close()
 
 if __name__ == "__main__":
-    try:
-        print("Conecting to VPN...")
-        subprocess.run(["sudo", "wg-quick", "up", VPN_CONFIG], check=True)
+    #try:
+    #    print("Conecting to VPN...")
+    #    subprocess.run(["sudo", "wg-quick", "up", VPN_CONFIG], check=True)
 
-        print("VPN connected.")
-        renew_ads()
-    except subprocess.CalledProcessError as e:
-        print(f"Error executting command: {e}", file=sys.stderr)
-    finally:
-        print("Disconnecting from VPN...")
-        subprocess.run(["sudo", "wg-quick", "down", VPN_CONFIG], check=True)
-        print("VPN disconnected.")
+    #    print("VPN connected.")
+    renew_ads()
+    #except subprocess.CalledProcessError as e:
+    #    print(f"Error executting command: {e}", file=sys.stderr)
+    #finally:
+    #    print("Disconnecting from VPN...")
+    #    subprocess.run(["sudo", "wg-quick", "down", VPN_CONFIG], check=True)
+    #    print("VPN disconnected.")
