@@ -1,1 +1,4 @@
-# autorenew-milanuncios
+
+
+pip install playwright
+playwright install
