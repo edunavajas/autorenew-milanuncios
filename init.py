@@ -12,7 +12,7 @@ PASSWORD = os.getenv('MILANUNCIOS_PASSWORD')
 URL_LOGIN = "https://www.milanuncios.com/"
 URL_MY_ADS = "https://www.milanuncios.com/mis-anuncios/"
 
-VPN_CONFIG = "esp_vpn.ovpn"
+VPN_CONFIG = "esp_vpn.conf"
 
 def renew_ads():
     with sync_playwright() as p:
