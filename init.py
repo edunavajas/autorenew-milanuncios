@@ -14,11 +14,13 @@ def renew_ads():
     with sync_playwright() as p:
         # Launch the browser
         browser = p.chromium.launch(headless=True)
-        context = browser.new_context()
+        context = browser.new_context(user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36")
         page = context.new_page()
 
         # Go to the login page
         page.goto(URL_LOGIN)
+        
+        print(page.content())
 
         # Click "Login" button by class name
         page.click('.ma-NavigationTopNav-mainActions-action')
