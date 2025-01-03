@@ -1,6 +1,8 @@
 from playwright.sync_api import sync_playwright
 import os
 import time
+import subprocess
+import sys
 
 # Environment variables for email and password
 EMAIL = os.getenv('MILANUNCIOS_EMAIL')
@@ -10,38 +12,41 @@ PASSWORD = os.getenv('MILANUNCIOS_PASSWORD')
 URL_LOGIN = "https://www.milanuncios.com/"
 URL_MY_ADS = "https://www.milanuncios.com/mis-anuncios/"
 
+VPN_CONFIG = "esp_vpn.ovpn"
+
 def renew_ads():
     with sync_playwright() as p:
-        # Launch the browser
         browser = p.chromium.launch(headless=True)
         context = browser.new_context(user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36")
         page = context.new_page()
 
-        # Go to the login page
+        print("Go to the login page")
         page.goto(URL_LOGIN)
         
         print(page.content())
 
-        # Click "Login" button by class name
+        print("Clicking the login button")
         page.click('.ma-NavigationTopNav-mainActions-action')
 
-        # Click "Continue with email" by class name
+
+        print("Clicking the continue with email button")
         page.click('.sui-AtomButton--outline')
 
-        # Fill in the email and password
+
+        print("Filling in the email and password")
         page.fill('#email', EMAIL)
         page.fill('#password', PASSWORD)
 
-        # Submit the login form by clicking the "Submit" button
+        print("Submitting the login form")
         page.click('.ma-FormLogin-submitButton')
 
         # Navigate to "My Ads" page
         page.goto(URL_MY_ADS)
 
-        # Wait for the ads to load
+        print("Waiting for the ads to load")
         page.wait_for_selector('.ma-AdCardV2')
 
-        # Select all ads
+        print("Selecting all ads")
         ads = page.query_selector_all('.ma-AdCardV2')
 
         for ad in ads:
@@ -59,4 +64,15 @@ def renew_ads():
         browser.close()
 
 if __name__ == "__main__":
-    renew_ads()
+    try:
+        print("Conecting to VPN...")
+        subprocess.run(["sudo", "wg-quick", "up", VPN_CONFIG], check=True)
+
+        print("VPN connected.")
+        renew_ads()
+    except subprocess.CalledProcessError as e:
+        print(f"Error executting command: {e}", file=sys.stderr)
+    finally:
+        print("Disconnecting from VPN...")
+        subprocess.run(["sudo", "wg-quick", "down", VPN_CONFIG], check=True)
+        print("VPN disconnected.")
