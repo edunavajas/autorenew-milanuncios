@@ -78,18 +78,13 @@ def renew_ads():
 
 def check_javascript():
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=False)  # Cambia a False para ver el navegador
+        browser = p.chromium.launch(headless=True)
         context = browser.new_context()
         page = context.new_page()
 
         # Cargar una página con JavaScript
         page.goto("https://www.whatismybrowser.com/detect/is-javascript-enabled")
-        page.wait_for_load_state("networkidle")
-
-        # Tomar una captura de pantalla para verificar
-        page.screenshot(path="javascript_check.png")
-
-        print("Captura de pantalla guardada en 'javascript_check.png'")
+        print(page.content())
         browser.close()
         
 if __name__ == "__main__":
