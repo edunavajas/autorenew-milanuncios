@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+  autorenew:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+    environment:
+      - PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
+    tty: true
