@@ -31,6 +31,8 @@ def renew_ads():
         print("Go to the login page")
         page.goto(URL_LOGIN, wait_until="networkidle")
         
+        page.on("console", lambda msg: print(f"CONSOLE: {msg.type} {msg.text}"))
+        
         print("Simulating human interactions")
         page.mouse.move(100, 100)
         page.mouse.click(100, 100)
@@ -39,12 +41,12 @@ def renew_ads():
         
         print(page.content())
         print("Waiting for the captcha button to appear...")
-        page.wait_for_selector(".geetest_btn", timeout=30000)
+        page.wait_for_selector(".geetest_btn", timeout=40000)
 
         print("Clicking the captcha button")
         page.click(".geetest_btn")
         
-        print(page.content())
+        #print(page.content())
         page.on("console", lambda msg: print(f"CONSOLE: {msg.type} {msg.text}"))
 
 
