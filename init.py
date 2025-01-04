@@ -3,22 +3,27 @@ import os
 import time
 import subprocess
 import sys
+import json
 
 # Environment variables for email and password
 EMAIL = os.getenv('MILANUNCIOS_EMAIL')
 PASSWORD = os.getenv('MILANUNCIOS_PASSWORD')
 
 # URLs
+COOKIES_FILE = "cookies.json"
 URL_LOGIN = "https://www.milanuncios.com/"
 URL_MY_ADS = "https://www.milanuncios.com/mis-anuncios/"
-
-VPN_CONFIG = "/home/ubuntu/autorenew-milanuncios/esp_vpn.conf"
 
 def renew_ads():
     with sync_playwright() as p:
         browser = p.chromium.launch(
             headless=True)
         context = browser.new_context(user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36")
+        
+        with open(COOKIES_FILE, "r") as f:
+            cookies = json.load(f)
+        context.add_cookies(cookies)
+        
         page = context.new_page()
 
         print("Go to the login page")
