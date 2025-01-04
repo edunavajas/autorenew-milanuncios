@@ -11,6 +11,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN pip3 install --no-cache-dir playwright && \
     playwright install && playwright install-deps
 
+RUN pip3 install --no-cache-dir python-dotenv
+RUN pip3 install playwright-stealth
+
+
+
 # Crear directorio de trabajo
 WORKDIR /app
 

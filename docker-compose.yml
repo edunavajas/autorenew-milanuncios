@@ -9,3 +9,25 @@ services:
     environment:
       - PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
     tty: true
+
+#version: '3.8'
+#
+#services:
+#  selenium:
+#    image: selenium/standalone-chrome:latest
+#    container_name: selenium
+#    shm_size: "2g"  # Evita problemas de memoria
+#    ports:
+#      - "4444:4444"
+#    volumes:
+#      - /dev/shm:/dev/shm
+#
+#  script-runner:
+#    build:
+#      context: .
+#      dockerfile: DockerFileSelenium
+#    depends_on:
+#      - selenium
+#    environment:
+#      - SELENIUM_HOST=selenium
+#
