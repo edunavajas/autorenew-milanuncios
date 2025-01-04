@@ -33,9 +33,13 @@ def renew_ads():
         
         page.mouse.move(100, 100)
         page.mouse.click(100, 100)
-        page.wait_for_timeout(1000)
-
+        page.wait_for_timeout(10000)
         
+        print("Clicking the login button")
+        page.click('.geetest_btn')
+        
+        page.wait_for_timeout(3000)
+
         print(page.content())
 
         print("Clicking the login button")
@@ -76,16 +80,6 @@ def renew_ads():
         # Close the browser
         browser.close()
 
-def check_javascript():
-    with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True)
-        context = browser.new_context()
-        page = context.new_page()
-
-        # Cargar una página con JavaScript
-        page.goto("https://www.whatismybrowser.com/detect/is-javascript-enabled")
-        print(page.content())
-        browser.close()
         
 if __name__ == "__main__":
     #try:
@@ -93,7 +87,6 @@ if __name__ == "__main__":
     #    subprocess.run(["sudo", "wg-quick", "up", VPN_CONFIG], check=True)
 
     #    print("VPN connected.")
-    check_javascript()
     renew_ads()
     #except subprocess.CalledProcessError as e:
     #    print(f"Error executting command: {e}", file=sys.stderr)
