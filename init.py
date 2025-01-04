@@ -18,7 +18,9 @@ def renew_ads():
     with sync_playwright() as p:
         browser = p.chromium.launch(
             headless=True)
-        context = browser.new_context(user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36")
+        context = browser.new_context(
+            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
+            java_script_enabled=True )
         
         with open(COOKIES_FILE, "r") as f:
             cookies = json.load(f)
@@ -28,6 +30,11 @@ def renew_ads():
 
         print("Go to the login page")
         page.goto(URL_LOGIN)
+        
+        page.mouse.move(100, 100)
+        page.mouse.click(100, 100)
+        page.wait_for_timeout(1000)
+
         
         print(page.content())
 
@@ -69,12 +76,29 @@ def renew_ads():
         # Close the browser
         browser.close()
 
+def check_javascript():
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=False)  # Cambia a False para ver el navegador
+        context = browser.new_context()
+        page = context.new_page()
+
+        # Cargar una página con JavaScript
+        page.goto("https://www.whatismybrowser.com/detect/is-javascript-enabled")
+        page.wait_for_load_state("networkidle")
+
+        # Tomar una captura de pantalla para verificar
+        page.screenshot(path="javascript_check.png")
+
+        print("Captura de pantalla guardada en 'javascript_check.png'")
+        browser.close()
+        
 if __name__ == "__main__":
     #try:
     #    print("Conecting to VPN...")
     #    subprocess.run(["sudo", "wg-quick", "up", VPN_CONFIG], check=True)
 
     #    print("VPN connected.")
+    check_javascript()
     renew_ads()
     #except subprocess.CalledProcessError as e:
     #    print(f"Error executting command: {e}", file=sys.stderr)
