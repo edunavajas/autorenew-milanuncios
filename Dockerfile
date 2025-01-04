@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # Instalar Playwright y sus navegadores
 RUN pip3 install --no-cache-dir playwright && \
-    playwright install
+    playwright install && playwright install-deps
 
 # Crear directorio de trabajo
 WORKDIR /app
