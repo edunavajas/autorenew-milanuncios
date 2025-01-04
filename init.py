@@ -33,9 +33,10 @@ def renew_ads():
         
         page.mouse.move(100, 100)
         page.mouse.click(100, 100)
-        page.wait_for_timeout(10000)
+        page.wait_for_timeout(15000)
         
-        print("Clicking the login button")
+        print(page.content())
+        print("Clicking the captcha button")
         page.click('.geetest_btn')
         
         page.wait_for_timeout(3000)
