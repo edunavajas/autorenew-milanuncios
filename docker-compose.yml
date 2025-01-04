@@ -9,3 +9,4 @@ services:
     environment:
       - PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
     tty: true
+    platform: linux/arm/v7
